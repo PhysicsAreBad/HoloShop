@@ -7,24 +7,33 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
-public class HoloShop extends JavaPlugin {
-	private HashMap<Location, Hologram> activeHolo = new HashMap<Location, Hologram>();
+public class HoloShop extends JavaPlugin implements Listener {
+	
+	public HashMap<Location, Hologram> activeHolo = new HashMap<Location, Hologram>();
 	private Economy econ = null;
+
 	
 	@Override
 	  public void onEnable() {
+		
+		PluginManager pm = this.getServer().getPluginManager();
+		pm.registerEvents(new ShopClick(this), this);
+		
 		if (!setupEconomy() ) {
             getLogger().severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
 	  }
+	
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -60,5 +69,6 @@ public class HoloShop extends JavaPlugin {
         }
         return false;
 	}
+	
 }
  
