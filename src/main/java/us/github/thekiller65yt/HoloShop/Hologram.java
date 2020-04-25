@@ -66,6 +66,9 @@ public class Hologram {
 				amount = amount + is.getAmount();
 			}
 		}
+		if (amount == 0) {
+			return false;
+		}
 		inv.remove(heldItem.getType());
 		return depositMoney(p , amount);
 	}
