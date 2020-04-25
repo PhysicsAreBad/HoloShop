@@ -40,7 +40,7 @@ public class HoloShop extends JavaPlugin implements Listener {
 		if (cmd.getName().equalsIgnoreCase("holoshop")) { // If the player typed /basic then do the following, note: If you only registered this executor for one command, you don't need this
 			//if (args[0] == "create") {
 				Player p = (Player) sender;
-				Hologram newHolo = new Hologram(p.getLocation(), "test");
+				Hologram newHolo = new Hologram(p.getLocation(), "test", econ);
 				activeHolo.put(newHolo.getLocation(), newHolo);
 			//}
 			return true;
@@ -60,15 +60,6 @@ public class HoloShop extends JavaPlugin implements Listener {
         econ = rsp.getProvider();
         return econ != null;
     }
-	
-	public boolean depositMoney (Player p, double amount) {
-		OfflinePlayer op = p;
-		EconomyResponse r = econ.depositPlayer(op, amount);
-        if(r.transactionSuccess()) {
-            return true;
-        }
-        return false;
-	}
 	
 }
  
