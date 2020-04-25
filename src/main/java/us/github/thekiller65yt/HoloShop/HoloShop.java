@@ -3,16 +3,27 @@ package us.github.thekiller65yt.HoloShop;
 import java.util.HashMap;
 
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
+
 public class HoloShop extends JavaPlugin {
-	HashMap<Hologram, Location> activeHolo = new HashMap<Hologram, Location>();
+	private HashMap<Location, Hologram> activeHolo = new HashMap<Location, Hologram>();
+	private Economy econ = null;
 	
 	@Override
 	  public void onEnable() {
+		if (!setupEconomy() ) {
+            getLogger().severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 	  }
 	
 	@Override
@@ -21,7 +32,7 @@ public class HoloShop extends JavaPlugin {
 			//if (args[0] == "create") {
 				Player p = (Player) sender;
 				Hologram newHolo = new Hologram(p.getLocation(), "test");
-				activeHolo.put(newHolo, newHolo.getLocation());
+				activeHolo.put(newHolo.getLocation(), newHolo);
 			//}
 			return true;
 		} //If this has happened the function will return true. 
@@ -29,5 +40,25 @@ public class HoloShop extends JavaPlugin {
 		return false; 
 	}
 	
+	private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
+    }
+	
+	public boolean depositMoney (Player p, double amount) {
+		OfflinePlayer op = p;
+		EconomyResponse r = econ.depositPlayer(op, amount);
+        if(r.transactionSuccess()) {
+            return true;
+        }
+        return false;
+	}
 }
  

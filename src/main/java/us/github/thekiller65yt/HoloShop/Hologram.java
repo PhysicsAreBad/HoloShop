@@ -3,6 +3,7 @@ package us.github.thekiller65yt.HoloShop;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class Hologram {
@@ -47,6 +48,10 @@ public class Hologram {
 	
 	public ItemStack getHeldItem () {
 		return heldItem;
+	}
+	
+	public void sellItem (Player p) {
+		//p.getInventory()
 	}
 	
 	public boolean destroy () {
