@@ -1,0 +1,9 @@
+name: HoloShop
+main: us.github.thekiller65yt.HoloShop.HoloShop
+version: 0.01
+commands:
+   holoshop:
+      description: HoloShop Plugin Main Command
+      usage: /<command> [args]
+      permission: holoshop.edit
+      permission-message: You don't have <permission>
